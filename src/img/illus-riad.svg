@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900"><title>Patio de riad (illustration originale Escale Spa)</title>
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F9E9DC"/><stop offset="1" stop-color="#F3D9C9"/></linearGradient>
+<linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7C9B8"/><stop offset="1" stop-color="#D7B09C"/></linearGradient>
+<pattern id="zel" width="60" height="60" patternUnits="userSpaceOnUse"><rect width="60" height="60" fill="#E9D3C3"/><path d="M30 6 54 30 30 54 6 30Z" fill="none" stroke="#C99A86" stroke-width="2"/><circle cx="30" cy="30" r="6" fill="#B9786A" opacity=".55"/></pattern>
+<linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFD3C8"/><stop offset="1" stop-color="#9DB8AB"/></linearGradient>
+</defs>
+<rect width="1200" height="900" fill="#F4ECE2"/>
+<rect y="620" width="1200" height="280" fill="url(#floor)"/>
+<rect y="610" width="1200" height="22" fill="url(#zel)"/>
+<!-- arches -->
+<g fill="#EADBCB">
+<path d="M0 0h1200v610H0z"/>
+</g>
+<g fill="url(#sky)">
+<path d="M90 610V330a150 150 0 0 1 300 0v280z"/>
+<path d="M450 610V280a150 150 0 0 1 300 0v330z"/>
+<path d="M810 610V330a150 150 0 0 1 300 0v280z"/>
+</g>
+<g fill="none" stroke="#B98A64" stroke-width="10">
+<path d="M90 610V330a150 150 0 0 1 300 0v280"/>
+<path d="M450 610V280a150 150 0 0 1 300 0v330"/>
+<path d="M810 610V330a150 150 0 0 1 300 0v280"/>
+</g>
+<!-- palm & orange tree behind -->
+<g fill="#7F8F6C" opacity=".85">
+<path d="M600 360c-90-40-160-20-200 30 60-20 120-20 200-30z"/><path d="M600 360c80-60 160-50 210 0-70-20-130-10-210 0z"/>
+<path d="M600 360c-40-70-20-130 30-170-10 60-10 110-30 170z"/><path d="M600 360c50-60 120-80 180-60-70 10-120 30-180 60z"/>
+<rect x="592" y="360" width="16" height="250" fill="#9C7B5F"/>
+</g>
+<g><circle cx="240" cy="420" r="80" fill="#8C9A72"/><circle cx="215" cy="400" r="9" fill="#E3A15C"/><circle cx="262" cy="440" r="9" fill="#E3A15C"/><circle cx="250" cy="380" r="8" fill="#E3A15C"/><rect x="234" y="480" width="12" height="130" fill="#9C7B5F"/></g>
+<g><circle cx="960" cy="440" r="70" fill="#7F8F6C"/><circle cx="940" cy="430" r="8" fill="#E3A15C"/><circle cx="985" cy="455" r="8" fill="#E3A15C"/><rect x="954" y="490" width="12" height="120" fill="#9C7B5F"/></g>
+<!-- fountain -->
+<ellipse cx="600" cy="760" rx="250" ry="58" fill="#C4937E"/>
+<ellipse cx="600" cy="752" rx="226" ry="46" fill="url(#water)"/>
+<ellipse cx="600" cy="752" rx="90" ry="16" fill="#D6E3DB" opacity=".7"/>
+<!-- massage mats & cushions -->
+<g>
+<rect x="110" y="700" width="300" height="70" rx="30" fill="#EBCFC6"/>
+<rect x="128" y="690" width="120" height="40" rx="18" fill="#F7F0E6"/>
+<rect x="840" y="700" width="260" height="70" rx="30" fill="#D7A497"/>
+<rect x="1000" y="682" width="80" height="50" rx="20" fill="#F7F0E6"/>
+</g>
+<!-- lanterns -->
+<g fill="#C6A66A"><path d="M330 120h20l10 40h-40z"/><rect x="318" y="160" width="44" height="70" rx="6" opacity=".9"/><circle cx="340" cy="195" r="14" fill="#FFE2B3"/><path d="M340 0v120" stroke="#C6A66A" stroke-width="3"/></g>
+<g fill="#C6A66A"><path d="M850 120h20l10 40h-40z"/><rect x="838" y="160" width="44" height="70" rx="6" opacity=".9"/><circle cx="860" cy="195" r="14" fill="#FFE2B3"/><path d="M860 0v120" stroke="#C6A66A" stroke-width="3"/></g>
+<!-- towels & tray -->
+<g><ellipse cx="600" cy="860" rx="90" ry="16" fill="#C6A66A"/><rect x="540" y="822" width="70" height="30" rx="12" fill="#F7F0E6"/><rect x="600" y="830" width="60" height="22" rx="10" fill="#EBCFC6"/><path d="M540 815h0" /></g>
+</svg>

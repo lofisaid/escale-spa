@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 124">
+  <title>Escale Spa</title>
+  <svg x="0" y="0" width="100" height="124" viewBox="0 0 100 124">
+  <path fill="#B07E4E" d="M50 0C55 9 66 14 73 19C77 22 79 24 79 27H86V33H91C96 35 98 40 98 46V116L94 124H6L2 116V46C2 40 4 35 9 33H14V27H21C21 24 23 22 27 19C34 14 45 9 50 0Z"/>
+  <path fill="none" stroke="#F4E6D3" stroke-width="1.4" opacity=".7" d="M50 8C54 14 63 18 69 23C72 25 74 27 74 30V31.5H81.5V37.5H87C91 39 92.5 43 92.5 47V114.5L89.5 119H10.5L7.5 114.5V47C7.5 43 9 39 13 37.5H18.5V31.5H26V30C26 27 28 25 31 23C37 18 46 14 50 8Z"/>
+  <g fill="#F4E6D3">
+    <path d="M13 102C24 85 40 84 51 95C60 104 72 107 87 96C76 108 61 110 50 99C41 90 27 90 13 102Z"/>
+    <path d="M46.5 96C39 80 42 62 55 50C61 45 64 40 63 35.5C66 41 64 47 58 53C47 64 45 79 50 94Z"/>
+    <path d="M47 86C40 77 29 74 20 78C29 77 38 81 47 86Z"/>
+    <path d="M47 86C40 77 29 74 20 78C27 84 38 87 47 86Z" opacity=".55"/>
+    <path d="M53 76C59 67 70 64 78 67C70 67 61 71 53 76Z"/>
+    <path d="M53 76C59 67 70 64 78 67C73 74 62 77 53 76Z" opacity=".55"/>
+  </g>
+  <circle cx="61.5" cy="27.5" r="3.6" fill="#F4E6D3"/>
+</svg>
+  <text x="122" y="84" font-family="Fraunces, 'Iowan Old Style', Georgia, serif" font-weight="600" font-size="62" letter-spacing="-1" fill="#5A2A14">Escale Spa</text>
+</svg>

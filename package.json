@@ -1,0 +1,29 @@
+{
+  "name": "escale-spa",
+  "version": "0.1.0",
+  "description": "Prototype du site Escale Spa (statique, FR/EN/AR)",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "stills": "node scripts/render-stills.mjs",
+    "preview": "node scripts/serve.mjs",
+    "test": "node tests/run-tests.mjs",
+    "lighthouse": "node tests/lighthouse.mjs"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@fontsource-variable/figtree": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource/amiri": "^5.3.0",
+    "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
+    "axe-core": "^4.14.0",
+    "esbuild": "^0.28.2",
+    "lighthouse": "^13.5.0",
+    "playwright": "^1.56.0",
+    "sharp": "^0.35.5",
+    "subset-font": "^2.9.0",
+    "three": "^0.186.1"
+  },
+  "private": true,
+  "type": "module"
+}

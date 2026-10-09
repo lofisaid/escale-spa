@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900"><title>Huile, serviettes et bougie (illustration originale Escale Spa)</title>
+<defs>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE3B8" stop-opacity=".9"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></radialGradient>
+<linearGradient id="oil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7B46A"/><stop offset="1" stop-color="#B9792F"/></linearGradient>
+<linearGradient id="table" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9CDBD"/><stop offset="1" stop-color="#DDBBA8"/></linearGradient>
+</defs>
+<rect width="1200" height="900" fill="#F4ECE2"/>
+<path d="M760 900V330a230 230 0 0 1 460 0v570z" fill="#EBCFC6"/>
+<path d="M800 900V340a190 190 0 0 1 380 0v560z" fill="none" stroke="#C6A66A" stroke-width="3"/>
+<rect y="610" width="1200" height="290" fill="url(#table)"/>
+<rect y="604" width="1200" height="10" fill="#C99A86" opacity=".45"/>
+<!-- folded towels -->
+<g>
+<rect x="150" y="520" width="420" height="96" rx="40" fill="#F7F0E6"/>
+<rect x="170" y="452" width="380" height="84" rx="36" fill="#F3E3DA"/>
+<rect x="190" y="392" width="340" height="74" rx="32" fill="#EBCFC6"/>
+<path d="M190 430h340" stroke="#D7A497" stroke-width="3" opacity=".6"/>
+<path d="M170 494h380M150 568h420" stroke="#E3D6C7" stroke-width="3"/>
+</g>
+<!-- candle -->
+<circle cx="980" cy="430" r="160" fill="url(#glow)"/>
+<rect x="930" y="460" width="100" height="160" rx="10" fill="#FBF6EE"/>
+<ellipse cx="980" cy="462" rx="50" ry="10" fill="#F1E6D8"/>
+<path d="M980 455v-18" stroke="#3A2420" stroke-width="3"/>
+<path d="M980 400c14 18 14 30 0 40-14-10-14-22 0-40z" fill="#FFC27A"/>
+<!-- oil bottle -->
+<g>
+<path d="M660 620v-170c0-40 30-60 30-90v-40h60v40c0 30 30 50 30 90v170z" fill="url(#oil)" opacity=".92"/>
+<rect x="685" y="270" width="70" height="56" rx="8" fill="#7E5236"/>
+<path d="M680 460h80" stroke="#FBF6EE" stroke-width="3" opacity=".6"/>
+<rect x="676" y="480" width="88" height="70" rx="6" fill="#FBF6EE" opacity=".9"/>
+<path d="M694 505h52M694 525h36" stroke="#B9786A" stroke-width="4" stroke-linecap="round"/>
+</g>
+<!-- argan nuts & leaves -->
+<g><ellipse cx="560" cy="700" rx="26" ry="18" fill="#B98A64"/><ellipse cx="610" cy="716" rx="22" ry="16" fill="#9C7B5F"/><ellipse cx="520" cy="726" rx="20" ry="14" fill="#C6A66A"/>
+<path d="M430 700c40-30 80-30 110-10-40 20-70 20-110 10z" fill="#7F8F6C"/><path d="M450 740c30-10 60 0 80 20-40 0-60-5-80-20z" fill="#6E7F5C"/></g>
+<!-- small dish -->
+<ellipse cx="300" cy="720" rx="110" ry="26" fill="#F7F0E6"/><ellipse cx="300" cy="714" rx="80" ry="14" fill="#E7B46A" opacity=".8"/>
+</svg>

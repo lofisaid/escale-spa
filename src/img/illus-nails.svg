@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900"><title>Palette de vernis aux tons poudrés (illustration originale Escale Spa)</title>
+<rect width="1200" height="900" fill="#F6E6E0"/>
+<circle cx="600" cy="470" r="330" fill="#F4ECE2"/>
+<circle cx="600" cy="470" r="330" fill="none" stroke="#C6A66A" stroke-width="2"/>
+<g transform="translate(600 470)">
+<!-- bottles in an arc -->
+<g id="b">
+</g>
+</g>
+<g>
+<g transform="translate(330 520)"><rect x="-48" y="-110" width="96" height="120" rx="18" fill="#C9877A"/><rect x="-18" y="-190" width="36" height="84" rx="6" fill="#3A2420"/><rect x="-30" y="-80" width="18" height="70" rx="9" fill="#fff" opacity=".35"/></g>
+<g transform="translate(470 470)"><rect x="-48" y="-110" width="96" height="120" rx="18" fill="#E6B9AE"/><rect x="-18" y="-190" width="36" height="84" rx="6" fill="#3A2420"/><rect x="-30" y="-80" width="18" height="70" rx="9" fill="#fff" opacity=".35"/></g>
+<g transform="translate(610 450)"><rect x="-48" y="-110" width="96" height="120" rx="18" fill="#994F42"/><rect x="-18" y="-190" width="36" height="84" rx="6" fill="#C6A66A"/><rect x="-30" y="-80" width="18" height="70" rx="9" fill="#fff" opacity=".3"/></g>
+<g transform="translate(750 470)"><rect x="-48" y="-110" width="96" height="120" rx="18" fill="#EAD4C7"/><rect x="-18" y="-190" width="36" height="84" rx="6" fill="#3A2420"/><rect x="-30" y="-80" width="18" height="70" rx="9" fill="#fff" opacity=".45"/></g>
+<g transform="translate(890 520)"><rect x="-48" y="-110" width="96" height="120" rx="18" fill="#B98F6B"/><rect x="-18" y="-190" width="36" height="84" rx="6" fill="#3A2420"/><rect x="-30" y="-80" width="18" height="70" rx="9" fill="#fff" opacity=".35"/></g>
+</g>
+<!-- swatches -->
+<g>
+<rect x="330" y="610" width="540" height="2" fill="#C6A66A"/>
+<g transform="translate(360 680)"><path d="M0 40V14a14 14 0 0 1 28 0v26z" fill="#C9877A"/></g>
+<g transform="translate(430 680)"><path d="M0 40V14a14 14 0 0 1 28 0v26z" fill="#E6B9AE"/></g>
+<g transform="translate(500 680)"><path d="M0 40V14a14 14 0 0 1 28 0v26z" fill="#994F42"/></g>
+<g transform="translate(570 680)"><path d="M0 40V14a14 14 0 0 1 28 0v26z" fill="#EAD4C7" stroke="#D7A497"/></g>
+<g transform="translate(640 680)"><path d="M0 40V14a14 14 0 0 1 28 0v26z" fill="#B98F6B"/></g>
+<g transform="translate(710 680)"><path d="M0 40V14a14 14 0 0 1 28 0v26z" fill="#6E3B36"/></g>
+<g transform="translate(780 680)"><path d="M0 40V14a14 14 0 0 1 28 0v26z" fill="#F7F0E6" stroke="#D7A497"/></g>
+</g>
+<!-- file -->
+<rect x="250" y="760" width="300" height="22" rx="11" fill="#E8D2C3" transform="rotate(-8 400 771)"/>
+<rect x="680" y="770" width="260" height="20" rx="10" fill="#D7A497" transform="rotate(6 810 780)"/>
+</svg>

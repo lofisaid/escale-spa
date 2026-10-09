@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900"><title>Bols, pinceau et masque pour un soin du visage (illustration originale Escale Spa)</title>
+<defs><linearGradient id="t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE2D6"/><stop offset="1" stop-color="#E2D2C2"/></linearGradient></defs>
+<rect width="1200" height="900" fill="#EFE3D6"/>
+<path d="M120 900V300a240 240 0 0 1 480 0v600z" fill="#F6E6E0"/>
+<rect y="560" width="1200" height="340" fill="url(#t)"/>
+<!-- linen -->
+<path d="M80 600h640l60 220H40z" fill="#F7F0E6"/>
+<path d="M120 640h560M100 700h610" stroke="#E3D6C7" stroke-width="3"/>
+<!-- big bowl -->
+<ellipse cx="400" cy="640" rx="190" ry="44" fill="#FBF8F3"/>
+<path d="M210 640c10 90 90 130 190 130s180-40 190-130" fill="#F3ECE3"/>
+<ellipse cx="400" cy="640" rx="168" ry="34" fill="#E7C4B6"/>
+<path d="M300 636c40-12 100-14 150-2" stroke="#F6E6E0" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+<!-- brush -->
+<g transform="rotate(-24 560 600)"><rect x="470" y="590" width="260" height="16" rx="8" fill="#7E5236"/><rect x="430" y="586" width="50" height="24" rx="4" fill="#C6A66A"/><path d="M380 588h54v20h-54c-14 0-24-5-24-10s10-10 24-10z" fill="#F3E3DA"/></g>
+<!-- small bowls -->
+<ellipse cx="870" cy="640" rx="110" ry="28" fill="#FBF8F3"/><path d="M760 640c6 56 52 82 110 82s104-26 110-82" fill="#F3ECE3"/><ellipse cx="870" cy="640" rx="94" ry="20" fill="#C9877A" opacity=".55"/>
+<ellipse cx="1040" cy="700" rx="80" ry="20" fill="#FBF8F3"/><path d="M960 700c4 40 38 60 80 60s76-20 80-60" fill="#F3ECE3"/><ellipse cx="1040" cy="700" rx="66" ry="14" fill="#F1E6D8"/>
+<!-- rolled towels -->
+<g><rect x="700" y="760" width="230" height="70" rx="35" fill="#EBCFC6"/><circle cx="930" cy="795" r="35" fill="#F3E3DA"/><path d="M930 770a25 25 0 1 0 0 50 15 15 0 1 0 0-30" fill="none" stroke="#D7A497" stroke-width="4"/></g>
+<!-- sprig -->
+<path d="M1000 470c-30 60-40 110-30 170" stroke="#6E7F5C" stroke-width="4" fill="none"/>
+<g fill="#7F8F6C"><ellipse cx="992" cy="500" rx="26" ry="10" transform="rotate(-40 992 500)"/><ellipse cx="1012" cy="540" rx="26" ry="10" transform="rotate(30 1012 540)"/><ellipse cx="978" cy="560" rx="26" ry="10" transform="rotate(-35 978 560)"/><ellipse cx="996" cy="600" rx="24" ry="9" transform="rotate(25 996 600)"/></g>
+</svg>
