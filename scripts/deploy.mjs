@@ -5,6 +5,8 @@
 //   node scripts/deploy.mjs --list-backups      liste les sauvegardes
 //   node scripts/deploy.mjs --restore latest    simulation de restauration
 //   node scripts/deploy.mjs --restore latest --apply   restauration réelle
+//   node scripts/deploy.mjs --check-protection  vérifie la protection de /validation-projet/ (lecture seule)
+//   node scripts/deploy.mjs --init-protected-dir [--apply]  crée le dossier validation-projet VIDE (avant la protection hPanel)
 //   (--restore <AAAAMMJJ-HHMMSS> pour une sauvegarde précise ; --no-build pour ne pas recompiler)
 //
 // Toute opération est limitée à REMOTE_PUBLIC. Aucun mot de passe : clé SSH dédiée.
@@ -106,6 +108,43 @@ function plan(local, remote) {
   return { add, upd, rem };
 }
 
+
+const SITE = 'https://escalespa.com';
+const PROTECTED_DIR = `${REMOTE_PUBLIC}/validation-projet`;
+
+// Vérifie (lecture seule, sans afficher de secret) que /validation-projet/ est protégé par mot de passe :
+// .htaccess hPanel présent avec AuthType, fichier de mots de passe existant, et HTTP 401 sans identifiants.
+async function protectionStatus() {
+  const out = ssh(`d='${PROTECTED_DIR}'; if [ ! -d "$d" ]; then echo NODIR; elif [ ! -f "$d/.htaccess" ]; then echo NOHT; else
+    grep -qiE '^[[:space:]]*AuthType[[:space:]]+Basic' "$d/.htaccess" && echo AUTH || echo NOAUTH;
+    pf=$(grep -iE '^[[:space:]]*AuthUserFile' "$d/.htaccess" | head -1 | awk '{print $2}' | tr -d '"'); if [ -n "$pf" ] && [ -f "$pf" ]; then echo PWFILE_OK; else echo PWFILE_MISSING; fi;
+    case "$pf" in "$d"/*) echo PWFILE_IN_PROTECTED_DIR;; esac; fi`).split('\n').map((l) => l.trim()).filter(Boolean);
+  const res = { remote: out, http: {} };
+  for (const u of ['/validation-projet/', '/validation-projet/index.html']) {
+    try {
+      const r = await fetch(SITE + u, { redirect: 'manual' });
+      res.http[u] = { status: r.status, challenge: !!r.headers.get('www-authenticate') };
+    } catch (e) { res.http[u] = { status: 'ERR ' + e.message }; }
+  }
+  res.ok = out.includes('AUTH') && out.includes('PWFILE_OK') && Object.values(res.http).every((h) => h.status === 401 && h.challenge);
+  return res;
+}
+function printProtection(r) {
+  console.log(`  .htaccess hPanel : ${r.remote.includes('AUTH') ? 'AuthType Basic présent' : r.remote[0]} · fichier de mots de passe : ${r.remote.includes('PWFILE_OK') ? 'présent' : 'ABSENT'}`);
+  for (const [u, h] of Object.entries(r.http)) console.log(`  GET ${u} sans identifiants → HTTP ${h.status}${h.challenge ? ' (demande de mot de passe)' : ''}`);
+  const inside = r.remote.includes('PWFILE_IN_PROTECTED_DIR');
+  if (inside) console.log('  ⚠ le fichier de mots de passe est DANS validation-projet : à ajouter à KEEP si son nom diffère de .htpasswd');
+}
+
+function initProtectedDir() {
+  checkRemotePath();
+  const exists = ssh(`[ -d '${PROTECTED_DIR}' ] && echo yes || echo no`).trim() === 'yes';
+  if (exists) { console.log(`✔ ${PROTECTED_DIR} existe déjà.`); return; }
+  if (!APPLY) return console.log(`SIMULATION : créerait le dossier VIDE ${PROTECTED_DIR} (aucun fichier). Ajouter --apply.`);
+  ssh(`mkdir '${PROTECTED_DIR}' && chmod 755 '${PROTECTED_DIR}' && ls -ld '${PROTECTED_DIR}'`);
+  console.log(`✔ Dossier vide créé : ${PROTECTED_DIR}\nÉtape suivante : le protéger par mot de passe dans hPanel, puis : node scripts/deploy.mjs --check-protection`);
+}
+
 async function deploy() {
   build();
   checkDist();
@@ -117,10 +156,15 @@ async function deploy() {
   if (rem.length) console.log('  supprimés (après sauvegarde) : ' + rem.slice(0, 20).join(', ') + (rem.length > 20 ? ' …' : ''));
   if (rem.includes('default.php')) console.log('  ↳ default.php (page par défaut Hostinger) sera retiré.');
   console.log('  fichiers cachés inclus : ' + [...local.keys()].filter((p) => p.split('/').some((x) => x.startsWith('.'))).join(', '));
+  console.log('\nProtection par mot de passe de /validation-projet/ :');
+  const prot = await protectionStatus();
+  printProtection(prot);
+  if (!prot.ok) console.log('  ✖ NON protégé : --apply refusera de publier tant que la protection hPanel n’est pas active (HTTP 401).');
   if (!APPLY) {
     console.log(`\nSIMULATION : aucun fichier transféré ni modifié.\nPour publier : node scripts/deploy.mjs --apply`);
     return;
   }
+  if (!prot.ok) die('Protection de /validation-projet/ absente ou inactive : rien n’est publié. Créez la protection dans hPanel puis relancez --check-protection.');
   const extra = rem.filter((p) => p !== 'default.php');
   if (extra.length && !has('--allow-delete')) die(`Fichiers inattendus dans public_html (${extra.length}) : ${extra.slice(0, 10).join(', ')}. Vérifier, puis relancer avec --allow-delete si voulu.`);
   const id = stamp();
@@ -132,6 +176,10 @@ async function deploy() {
   await pushTar(DIST, stg);
   console.log('3/3 Bascule vers public_html (rsync --delete, hors public_html uniquement lu)');
   ssh(`test -f '${stg}/index.html' && ${RSYNC} '${stg}/' '${REMOTE_PUBLIC}/' && rm -rf '${stg}'`);
+  console.log('4/4 Contrôle de la protection après publication :');
+  const after = await protectionStatus();
+  printProtection(after);
+  if (!after.ok) console.error('✖ ALERTE : la protection n’est plus active après publication. Restaurer : node scripts/deploy.mjs --restore ' + id + ' --apply');
   console.log(`\n✔ Déployé. Sauvegarde : ${id}\nRestauration : node scripts/deploy.mjs --restore ${id} --apply`);
 }
 
@@ -151,6 +199,8 @@ async function restore() {
   console.log(`✔ Restauré (état avant restauration conservé dans ${BACKUP_DIR}/${pre}).`);
 }
 
-if (has('--list-backups')) { checkRemotePath(); console.log(ssh(`ls -1 '${BACKUP_DIR}' 2>/dev/null || echo "(aucune)"`)); }
+if (has('--init-protected-dir')) initProtectedDir();
+else if (has('--check-protection')) { checkRemotePath(); const r = await protectionStatus(); printProtection(r); console.log(r.ok ? '✔ Protection active.' : '✖ Protection NON active.'); process.exitCode = r.ok ? 0 : 1; }
+else if (has('--list-backups')) { checkRemotePath(); console.log(ssh(`ls -1 '${BACKUP_DIR}' 2>/dev/null || echo "(aucune)"`)); }
 else if (restoreIdx > -1) await restore();
 else await deploy();
