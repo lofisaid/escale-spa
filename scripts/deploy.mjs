@@ -23,7 +23,9 @@ const USER = 'u263936814';
 const KEY = join(homedir(), '.ssh', 'escalespa_hostinger');
 const REMOTE_PUBLIC = '/home/u263936814/domains/escalespa.com/public_html';
 const BACKUP_DIR = '/home/u263936814/backups/escalespa'; // hors de public_html, dossier propre à ce site
-const RSYNC = `rsync -a --delete --exclude=/.well-known/`; // .well-known (certificats SSL) jamais supprimé
+// Jamais supprimés par --delete : certificats SSL, et protection par mot de passe de la page cachée (créée dans hPanel)
+const KEEP = ['/.well-known/', '/validation-projet/.htaccess', '/validation-projet/.htpasswd'];
+const RSYNC = `rsync -a --delete ${KEEP.map((k) => `--exclude='${k}'`).join(' ')}`;
 const NONEMPTY = (d) => `[ -n "$(ls -A '${d}')" ]`;
 const SSH_ARGS = ['-i', KEY, '-o', 'IdentitiesOnly=yes', '-o', 'BatchMode=yes', '-p', PORT, `${USER}@${HOST}`];
 
@@ -99,7 +101,8 @@ function checkDist() {
 function plan(local, remote) {
   const add = [], upd = [], rem = [];
   for (const [p, s] of local) (remote.has(p) ? (remote.get(p) !== s ? upd : []) : add).push(p);
-  for (const p of remote.keys()) if (!local.has(p)) rem.push(p);
+  const kept = (p) => KEEP.some((k) => ('/' + p).startsWith(k));
+  for (const p of remote.keys()) if (!local.has(p) && !kept(p)) rem.push(p);
   return { add, upd, rem };
 }
 

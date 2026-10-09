@@ -13,6 +13,7 @@ import { categories, services, packs } from '../config/catalogue.mjs';
 import fr from '../content/fr.mjs';
 import en from '../content/en.mjs';
 import ar from '../content/ar.mjs';
+import { validationData, validationPage } from './validation-page.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.resolve(ROOT, process.env.BD_DIST || 'dist');
@@ -811,11 +812,17 @@ async function processCss() {
   await fs.mkdir(path.join(DIST, 'assets', 'css'), { recursive: true });
   await fs.writeFile(path.join(DIST, 'assets', 'css', fn), r.code);
   ASSETS.css = `/assets/css/${fn}`;
+  // Feuille de la page cachée de validation
+  const vcss = await fs.readFile(path.join(SRC, 'css', 'validation.css'), 'utf8');
+  const vr = await esbuild.transform(vcss, { loader: 'css', minify: true, target: ['chrome100', 'safari15', 'firefox100'] });
+  const vfn = `validation-${hash(vr.code)}.css`;
+  await fs.writeFile(path.join(DIST, 'assets', 'css', vfn), vr.code);
+  ASSETS.validationCss = `/assets/css/${vfn}`;
 }
 
 async function processJs() {
   const r = await esbuild.build({
-    entryPoints: { main: path.join(SRC, 'js', 'main.js'), scene: path.join(SRC, 'js', 'scene.js') },
+    entryPoints: { main: path.join(SRC, 'js', 'main.js'), scene: path.join(SRC, 'js', 'scene.js'), validation: path.join(SRC, 'js', 'validation.js') },
     bundle: true, splitting: true, format: 'esm', minify: true, sourcemap: false,
     target: ['chrome100', 'safari15', 'firefox100'],
     outdir: path.join(DIST, 'assets', 'js'), entryNames: '[name]-[hash]', chunkNames: 'chunk-[hash]',
@@ -826,6 +833,7 @@ async function processJs() {
     const p = '/' + path.relative(DIST, path.resolve(ROOT, out)).split(path.sep).join('/');
     if (info.entryPoint?.endsWith('main.js')) ASSETS.js = p;
     if (info.entryPoint?.endsWith('scene.js')) ASSETS.sceneJs = p;
+    if (info.entryPoint?.endsWith('validation.js')) ASSETS.validationJs = p;
   }
   ASSETS.jsMeta = r.metafile;
 }
@@ -884,6 +892,11 @@ async function main() {
     if (lang === LANGS[0]) await fs.writeFile(path.join(DIST, '404.html'), html404);
   }
 
+  // Page cachée /validation-projet/ : hors navigation, hors sitemap, hors pages.json, noindex permanent
+  const vOut = path.join(DIST, 'validation-projet');
+  await fs.mkdir(vOut, { recursive: true });
+  await fs.writeFile(path.join(vOut, 'index.html'), validationPage({ data: validationData({ config, categories, services, packs, C }), ASSETS, logoSvg: icon.arch, siteUrl: config.siteUrl }));
+
   // Racine : redirection vers la langue par défaut
   await fs.writeFile(path.join(DIST, 'index.html'), `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Escale Spa</title>${config.prototype ? '<meta name="robots" content="noindex, nofollow">' : ''}<meta http-equiv="refresh" content="0; url=/fr/"><link rel="canonical" href="${abs('/fr/')}"></head><body><p><a href="/fr/">Escale Spa — Français</a> · <a href="/en/">English</a> · <a href="/ar/" lang="ar">العربية</a></p></body></html>`);
 
@@ -909,7 +922,13 @@ ErrorDocument 404 /404.html
 Options -Indexes
 DirectorySlash On
 ${config.prototype ? '# Prototype : ne pas indexer\n<IfModule mod_headers.c>\n  Header set X-Robots-Tag "noindex, nofollow"\n</IfModule>\n' : ''}
+# Page cachée de validation : toujours non indexée et jamais mise en cache
+<IfModule mod_setenvif.c>
+  SetEnvIf Request_URI "^/validation-projet(/|$)" VP_HIDDEN=1
+</IfModule>
 <IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow, noarchive" env=VP_HIDDEN
+  Header set Cache-Control "no-store" env=VP_HIDDEN
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
