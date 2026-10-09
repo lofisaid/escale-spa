@@ -118,20 +118,24 @@ async function protectionStatus() {
   const out = ssh(`d='${PROTECTED_DIR}'; if [ ! -d "$d" ]; then echo NODIR; elif [ ! -f "$d/.htaccess" ]; then echo NOHT; else
     grep -qiE '^[[:space:]]*AuthType[[:space:]]+Basic' "$d/.htaccess" && echo AUTH || echo NOAUTH;
     pf=$(grep -iE '^[[:space:]]*AuthUserFile' "$d/.htaccess" | head -1 | awk '{print $2}' | tr -d '"'); if [ -n "$pf" ] && [ -f "$pf" ]; then echo PWFILE_OK; else echo PWFILE_MISSING; fi;
-    case "$pf" in "$d"/*) echo PWFILE_IN_PROTECTED_DIR;; esac; fi`).split('\n').map((l) => l.trim()).filter(Boolean);
+    case "$pf" in "$d"/*) echo PWFILE_IN_PROTECTED_DIR;; esac; { [ -f "$d/index.html" ] && echo HAS_INDEX; true; }; fi`).split('\n').map((l) => l.trim()).filter(Boolean);
   const res = { remote: out, http: {} };
-  for (const u of ['/validation-projet/', '/validation-projet/index.html']) {
+  for (const u of ['/validation-projet/', '/validation-projet/index.html', '/validation-projet/_controle-protection.html']) {
     try {
       const r = await fetch(SITE + u, { redirect: 'manual' });
       res.http[u] = { status: r.status, challenge: !!r.headers.get('www-authenticate') };
     } catch (e) { res.http[u] = { status: 'ERR ' + e.message }; }
   }
-  res.ok = out.includes('AUTH') && out.includes('PWFILE_OK') && Object.values(res.http).every((h) => h.status === 401 && h.challenge);
+  // Dossier encore vide (aucun index) : le serveur répond 403 à l'URL nue avant toute authentification, sans rien servir.
+  // Tout chemin de fichier doit répondre 401. Une fois index.html publié, l'URL du dossier doit aussi répondre 401.
+  const hasIndex = out.includes('HAS_INDEX');
+  res.http['/validation-projet/'].emptyDirOk = !hasIndex && res.http['/validation-projet/'].status === 403;
+  res.ok = out.includes('AUTH') && out.includes('PWFILE_OK') && Object.entries(res.http).every(([u, h]) => (h.status === 401 && h.challenge) || h.emptyDirOk);
   return res;
 }
 function printProtection(r) {
   console.log(`  .htaccess hPanel : ${r.remote.includes('AUTH') ? 'AuthType Basic présent' : r.remote[0]} · fichier de mots de passe : ${r.remote.includes('PWFILE_OK') ? 'présent' : 'ABSENT'}`);
-  for (const [u, h] of Object.entries(r.http)) console.log(`  GET ${u} sans identifiants → HTTP ${h.status}${h.challenge ? ' (demande de mot de passe)' : ''}`);
+  for (const [u, h] of Object.entries(r.http)) console.log(`  GET ${u} sans identifiants → HTTP ${h.status}${h.challenge ? ' (demande de mot de passe)' : ''}${h.emptyDirOk ? ' (dossier vide : accepté tant qu’aucun index.html n’est publié)' : ''}`);
   const inside = r.remote.includes('PWFILE_IN_PROTECTED_DIR');
   if (inside) console.log('  ⚠ le fichier de mots de passe est DANS validation-projet : à ajouter à KEEP si son nom diffère de .htpasswd');
 }
